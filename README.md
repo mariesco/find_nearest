@@ -8,6 +8,10 @@
 - Vite
 - Typescript
 
+# Styles
+- Tailwind
+- Shadcn
+
 # Run the project
 
 1. Install the dependencies
