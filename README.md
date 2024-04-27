@@ -1,4 +1,12 @@
-# Welcome to Remix + Vite!
+# Welcome to Find Nearest Challenge!
+
+# Node v19.2.0 && Pnpm v.7.16.0
+
+# Stack
+
+- Remix
+- Vite
+- Typescript
 
 📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
 
