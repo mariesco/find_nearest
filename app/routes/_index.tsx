@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { formatCityName } from "@/lib/formatCityName";
 import getCities from "@/lib/getCities";
 
-import { ActionFunctionArgs, LoaderFunctionArgs, json, redirect, type MetaFunction } from "@remix-run/node";
+import { ActionFunctionArgs, LoaderFunctionArgs, json, redirect, type MetaFunction } from "@vercel/remix";
 import { Link, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {

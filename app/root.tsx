@@ -1,4 +1,4 @@
-import { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { LinksFunction, LoaderFunctionArgs } from "@vercel/remix";
 import {
   Links,
   Meta,
