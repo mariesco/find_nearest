@@ -37,7 +37,7 @@ export default function SearchInput({
 
   const SearchButton = () => {
     return (
-      <div className="flex">
+      <div className="flex" data-testid="search-button">
         <PaperPlaneIcon className="pt-1 mr-2"/>
         <p className=""> {defaultSelectedCityName ? defaultSelectedCityName : 'Search your city'} </p>
       </div>

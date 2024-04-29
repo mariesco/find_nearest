@@ -9,8 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+
 import { NearestListProps } from "@/types"
-import { Button } from "./ui/button"
 import { IndexActionType } from "@/routes/_index";
 
 export default function NearestList({ cities, citiesTableInfo }: 
