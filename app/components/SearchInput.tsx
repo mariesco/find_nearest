@@ -47,12 +47,14 @@ export default function SearchInput({
   if (isDesktop) {
     return (
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[150px] justify-self-center">
-            <SearchButton />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0" align="start">
+        <div className="flex justify-center">
+          <PopoverTrigger asChild>
+              <Button variant="outline" className="w-[150px] justify-self-center">
+                <SearchButton />
+              </Button>
+          </PopoverTrigger>
+        </div>
+        <PopoverContent className="w-[200px] p-0" align="center">
           <PossibleCitiesList setOpen={setOpen}/>
         </PopoverContent>
       </Popover>
@@ -61,11 +63,13 @@ export default function SearchInput({
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[150px] justify-self-center">
-            <SearchButton />
-        </Button>
-      </DrawerTrigger>
+      <div className="flex justify-center">
+        <DrawerTrigger asChild>
+          <Button variant="outline" className="w-[150px] justify-self-center">
+              <SearchButton />
+          </Button>
+        </DrawerTrigger>
+      </div>
       <DrawerContent>
         <div className="mt-4 border-t">
           <PossibleCitiesList setOpen={setOpen}/>

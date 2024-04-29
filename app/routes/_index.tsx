@@ -1,10 +1,11 @@
 import NearestList from "@/components/NearestList";
 import SearchInput from "@/components/SearchInput";
+import { Button } from "@/components/ui/button";
 import { formatCityName } from "@/lib/formatCityName";
 import getCities from "@/lib/getCities";
-import { City } from "@/types";
+
 import { ActionFunctionArgs, LoaderFunctionArgs, json, redirect, type MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -72,11 +73,17 @@ export default function Index() {
   return (
     <div className="p-6">
       <h1 className="pb-2 text-lg font-bold">Search your nearby city!</h1>
-      <h3> Tu ciudad es: </h3>
       <SearchInput defaultSelectedCityName={data?.selectedCityName} />
       <NearestList 
         cities={data.cities} 
         citiesTableInfo={data?.citiesTableInfo} />
+      <div className="flex justify-end">
+        <Link to="/">
+          <Button variant="outline">
+            Restart
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

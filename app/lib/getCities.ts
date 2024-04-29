@@ -16,12 +16,14 @@ const getCities = ({ pageToNavigate, selectedLat, selectedLng }: {
 
       allCities.forEach((city: City) => {
         const distance = getDistanceFromLatLonInKm(selectedLat, selectedLng, parseFloat(city.lat), parseFloat(city.lng));
-        if (nearestCities.length < 4) {
-          nearestCities.push({ city, distance });
-          nearestCities.sort((a, b) => a.distance - b.distance);
-        } else if (distance < nearestCities[3].distance) {
-          nearestCities[3] = { city, distance };
-          nearestCities.sort((a, b) => a.distance - b.distance);
+        if (city.lat !== selectedLat.toString() || city.lng !== selectedLng.toString()) {
+          if (nearestCities.length < 4) {
+            nearestCities.push({ city, distance });
+            nearestCities.sort((a, b) => a.distance - b.distance);
+          } else if (distance < nearestCities[3].distance) {
+            nearestCities[3] = { city, distance };
+            nearestCities.sort((a, b) => a.distance - b.distance);
+          }
         }
       });
 
