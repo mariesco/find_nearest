@@ -10,10 +10,16 @@ import { vercelPreset } from "@vercel/remix/vite";
 
 installGlobals();
 
+
+const isStorybook = process.argv[1]?.includes("storybook");
+
 export default defineConfig({
-  plugins: [!process.env.VITEST ? remix({
-    presets: [vercelPreset()]
-  }) : react(), tsconfigPaths()],
+  plugins: [
+    !isStorybook && !process.env.VITEST ? remix({
+      presets: [vercelPreset()]
+    }) : react(), 
+    tsconfigPaths(),
+  ],
   server: {
     port: 3000
   },
