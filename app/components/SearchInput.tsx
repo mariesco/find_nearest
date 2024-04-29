@@ -22,28 +22,24 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { City } from "@/types"
+
 import { IndexActionType } from "@/routes/_index"
 import { normalizeCityName } from "@/lib/normalizeCityName"
 import extractNumberAfterPlus from "@/lib/extractNumberAfterPlus"
 
 export default function SearchInput({
-  defaultSelectedCity
+  defaultSelectedCityName
 }: {
-    defaultSelectedCity: City 
+    defaultSelectedCityName: string 
   }) {
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
-  const [selectedCity, setSelectedCity] = React.useState<City | null>(
-    null
-  )
-  //TODO: If urlParams have selectedCity, add default value to button
 
   const SearchButton = () => {
     return (
       <div className="flex">
         <PaperPlaneIcon className="pt-1 mr-2"/>
-        <p className=""> Search your city </p>
+        <p className=""> {defaultSelectedCityName ? defaultSelectedCityName : 'Search your city'} </p>
       </div>
     )
   }
@@ -53,11 +49,11 @@ export default function SearchInput({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="w-[150px] justify-self-center">
-            {selectedCity ? <>{selectedCity.name}</> : <SearchButton />}
+            <SearchButton />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
-          <PossibleCitiesList setOpen={setOpen} setSelectedCity={setSelectedCity} />
+          <PossibleCitiesList setOpen={setOpen}/>
         </PopoverContent>
       </Popover>
     )
@@ -67,12 +63,12 @@ export default function SearchInput({
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant="outline" className="w-[150px] justify-self-center">
-            {selectedCity ? <>{selectedCity.name}</> : <SearchButton />}
+            <SearchButton />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
-          <PossibleCitiesList setOpen={setOpen} setSelectedCity={setSelectedCity} />
+          <PossibleCitiesList setOpen={setOpen}/>
         </div>
       </DrawerContent>
     </Drawer>
@@ -81,10 +77,8 @@ export default function SearchInput({
 
 function PossibleCitiesList({
   setOpen,
-  setSelectedCity,
 }: {
   setOpen: (open: boolean) => void
-  setSelectedCity: (city: City | null) => void
 }) {
 
   const fetcher = useFetcher<IndexActionType>();
@@ -100,7 +94,6 @@ function PossibleCitiesList({
       const cityToSearch = 
         possibleCitiesToSearch[possibleCityIndex]
 
-      setSelectedCity(cityToSearch)
       fetcher.submit({ 
         selectedCity: normalizeCityName(cityToSearch.name),
         selectedLng: cityToSearch.lng,

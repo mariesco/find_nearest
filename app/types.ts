@@ -4,3 +4,13 @@ export type City = {
   lat: string;
   lng: string;
 }
+
+export type CitiesTableInfoType = {
+  currentPage: number,
+  pages: number,
+}
+
+export type NearestListProps = {
+  cities: City[],
+  citiesTableInfo: CitiesTableInfoType
+}

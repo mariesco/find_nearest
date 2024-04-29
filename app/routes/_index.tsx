@@ -1,5 +1,6 @@
 import NearestList from "@/components/NearestList";
 import SearchInput from "@/components/SearchInput";
+import { formatCityName } from "@/lib/formatCityName";
 import getCities from "@/lib/getCities";
 import { City } from "@/types";
 import { ActionFunctionArgs, LoaderFunctionArgs, json, redirect, type MetaFunction } from "@remix-run/node";
@@ -13,28 +14,30 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = ({request}: LoaderFunctionArgs) => {
-  const cities = getCities(); 
   const url = new URL(request.url)
   const selectedCity = url.searchParams.get('selectedCity');
+  const selectedLat = parseFloat(url.searchParams.get('lat') as string);
+  const selectedLng = parseFloat(url.searchParams.get('lng') as string);
+  const pageToNavigate = Number(url.searchParams.get('page'));
 
-  if(!selectedCity){
-    //TOOD: Send all cities with pagination
-    return json({ 
-      cities: [cities[0], cities[1], cities[2]],
-      selectedCity: '' 
-    })
-  } else {
-    //TODO: Filter cities for proximity
-    const nearbyCities: City[] = [];
-    return json({ 
-      cities: nearbyCities,
-      selectedCity 
-    });
-  }
+  const { cities, citiesTableInfo } = getCities({ pageToNavigate, selectedLat, selectedLng }); 
+  
+  return json({ 
+    cities,
+    citiesTableInfo,
+    selectedCityName: selectedCity ? formatCityName(selectedCity) : ''
+  })
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
+  const pageToNavigate = formData.get('pageToNavigate') as string;
+  if(pageToNavigate){
+    const url = new URL(request.url);
+    url.searchParams.set('page', pageToNavigate);
+    return redirect(url.toString());
+  }
+
 
   const selectedCity = formData.get("selectedCity") as string;
   const selectedLat = formData.get("selectedLat") as string;
@@ -46,16 +49,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     )
   }
 
-  const allCities = getCities();
-  const searchedCity = formData.get("searchedCity") as string;
-  const possibleCitiesToSearch = allCities.filter(city => 
-    city.name.toLowerCase().includes(searchedCity.toLowerCase())
-  );
+  const { allCities } = getCities({});
 
-  if(possibleCitiesToSearch.length < 15){
-    return json({ possibleCitiesToSearch });
+  const searchedCity = formData.get("searchedCity") as string;
+  if(searchedCity){
+    const possibleCitiesToSearch = allCities.filter(city => 
+      city.name.toLowerCase().includes(searchedCity.toLowerCase())
+    );
+
+    if(possibleCitiesToSearch.length < 15){
+      return json({ possibleCitiesToSearch });
+    }
+    return json({ possibleCitiesToSearch: possibleCitiesToSearch.slice(0,15) });
   }
-  return json({ possibleCitiesToSearch: possibleCitiesToSearch.slice(0,15) });
+  return null
 }
 export type IndexActionType = typeof action;
 
@@ -66,8 +73,10 @@ export default function Index() {
     <div className="p-6">
       <h1 className="pb-2 text-lg font-bold">Search your nearby city!</h1>
       <h3> Tu ciudad es: </h3>
-      <SearchInput defaultSelectedCity={data?.selectedCity} />
-      <NearestList cities={data.cities} />
+      <SearchInput defaultSelectedCityName={data?.selectedCityName} />
+      <NearestList 
+        cities={data.cities} 
+        citiesTableInfo={data?.citiesTableInfo} />
     </div>
   );
 }
