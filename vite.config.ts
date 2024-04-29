@@ -19,6 +19,6 @@ export default defineConfig({
     css: true, 
     environment: "jsdom",
     env: loadEnv("test", process.cwd(), ""),
-    setupFiles: ['./app/lib/setupTest.ts'],
+    setupFiles: ['./app/lib/setupTest.tsx'],
   },
 });

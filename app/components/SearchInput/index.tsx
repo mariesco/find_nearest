@@ -113,6 +113,7 @@ function PossibleCitiesList({
       <fetcher.Form method="post">
         <CommandInput 
           name="searchedCity" 
+          data-testid="search-input"
           placeholder="Find your city..." 
           onChangeCapture={e => fetcher.submit(e.currentTarget.form, {
             method: 'POST'
