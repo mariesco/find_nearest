@@ -4,45 +4,63 @@ import '@testing-library/jest-dom/vitest';
 import { describe, it, expect } from "vitest";
 import { createRemixStub } from '@remix-run/testing';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
-import Index, { loader as indexLoader } from "@/routes/_index";
+import Index, { loader as indexLoader, action as indexAction } from "@/routes/_index";
 
 
 describe('SearchInput', () => {
 
- const FindNearestStub = createRemixStub([{
+  const FindNearestStub = createRemixStub([{
       path: '/',
       loader: indexLoader,
+      action: indexAction,
       Component: Index
   }])
 
-  it('SearchInput renders correctly', async () => {
+  const renderButtonAndInput = async () => {
     render(<FindNearestStub initialEntries={['/']} />);
     const searchButton = await waitFor(() =>  screen.getByTestId('search-button'));
     expect(searchButton).toBeInTheDocument();
-  });
-
-  it.todo('SearchInput should display suggestions when typing begins', async () => {
-    render(<FindNearestStub initialEntries={['/']} />);
-    const searchButton = await waitFor(() =>  screen.getByTestId('search-button'));
     fireEvent.click(searchButton)
 
-
-    // const ref = React.createRef()
-
     const searchInput = await waitFor(() =>  screen.getByTestId('search-input'));
-    // console.log('SearchINPUTT', searchInput)
-    //
-    // fireEvent.change(searchInput, { target: { value: 'Bay' } });
-    // expect(screen.getByText('Bay Minette')).toBeVisible(); 
+    expect(searchInput).toBeVisible()
+    return {
+      searchInput
+    }
+  }
+
+  it('Input for search should renders correctly when user click on button', async () => {
+    await renderButtonAndInput()
   });
 
-  it.todo('The component should not show any suggestions if the cities do not contain the searched word')
+  it('SearchInput should display suggestions when typing begins', async () => {
+    const { searchInput } = await renderButtonAndInput()
+    fireEvent.change(searchInput, { target: { value: 'Ale' } });
+    const citySearchedText = await waitFor(() =>  screen.getByText('Calera'));
+    expect(citySearchedText).toBeVisible()
 
-  it.todo('The user should be able to select a city from those suggested in the list', async () => {
-    render(<FindNearestStub initialEntries={['/']} />);
-    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'San' } });
-    fireEvent.click(await screen.findByText('San Francisco'));
-    expect(screen.getByRole('textbox')).toHaveValue('San Francisco');
+  });
+
+  it('The component should not show any suggestions if the cities do not contain the searched word', async () => {
+    const { searchInput } = await renderButtonAndInput()
+    fireEvent.change(searchInput, { target: { value: 'xxnosexx' } });
+
+    const noCityFoundText = await waitFor(() =>  screen.getByText('No cities found.'));
+    expect(noCityFoundText).toBeVisible()
+
+  })
+
+  it('The user should be able to select a city from those suggested in the list', async () => {
+    const { searchInput } = await renderButtonAndInput()
+    fireEvent.change(searchInput, {
+      target: { value: 'ale' }
+    });
+
+    const citySearchedText = await waitFor(() => screen.getByText('Calera'));
+    fireEvent.click(citySearchedText);
+
+    //TODO: Extend this test with correctly selection of city item [refactor of CommandItem mocks]
+    expect(citySearchedText).toBeInTheDocument();
   });
 
 });

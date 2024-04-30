@@ -21,7 +21,7 @@ export default function NearestList({ cities, citiesTableInfo }:
 
   return (
     <>
-      <Table>
+      <Table data-testid='nearest-list'>
         {
           cities.length === 0 ?
           <TableCaption>No nearby cities found.</TableCaption>
@@ -38,7 +38,7 @@ export default function NearestList({ cities, citiesTableInfo }:
             </TableHeader>
             <TableBody>
               {cities.map((city) => (
-                <TableRow key={city.name}>
+                <TableRow key={city.name} data-testid="city-item">
                   <TableCell className="font-medium">{city.name}</TableCell>
                   <TableCell>{city.lat}</TableCell>
                   <TableCell>{city.lng}</TableCell>
@@ -50,7 +50,7 @@ export default function NearestList({ cities, citiesTableInfo }:
         }
       </Table>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div data-testid="pagination-info" className="flex-1 text-sm text-muted-foreground">
           Page {citiesTableInfo.currentPage} of{" "}
           {citiesTableInfo.pages}.
         </div>

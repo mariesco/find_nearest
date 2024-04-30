@@ -44,6 +44,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const selectedLat = formData.get("selectedLat") as string;
   const selectedLng = formData.get("selectedLng") as string;
 
+  console.log('QUE PACHO VERCEL CON EL ACTION?', selectedCity)
   if(selectedCity){
     return redirect(
       `/?selectedCity=${selectedCity}&lat=${selectedLat}&lng=${selectedLng}`

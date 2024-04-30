@@ -12,6 +12,7 @@ describe('Full User Interaction Flow', () => {
       Component: Index
   }])
 
+  //TODO: Complete unit testing of NearestList and then come here to complete the integration test
   it.todo('The user can complete user flow from search city, and see nearest cities', async () => {
     render(<FindNearestStub initialEntries={['/']} />);
 

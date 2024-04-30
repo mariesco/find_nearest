@@ -39,7 +39,7 @@ export default function SearchInput({
     return (
       <div className="flex" data-testid="search-button">
         <PaperPlaneIcon className="pt-1 mr-2"/>
-        <p className=""> {defaultSelectedCityName ? defaultSelectedCityName : 'Search your city'} </p>
+        <p data-testid="selected-city" className=""> {defaultSelectedCityName ? defaultSelectedCityName : 'Search your city'} </p>
       </div>
     )
   }
@@ -110,7 +110,7 @@ function PossibleCitiesList({
 
   return (
     <Command>
-      <fetcher.Form method="post">
+      <fetcher.Form method="post" data-testid="search-form">
         <CommandInput 
           name="searchedCity" 
           data-testid="search-input"
